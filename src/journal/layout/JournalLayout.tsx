@@ -1,11 +1,11 @@
-import { Box } from "@mui/material";
-import { Navbar } from "../components";
+import { Box, Toolbar } from "@mui/material";
+import { Navbar, Sidebar } from "../components";
 
 type JournalLayoutProps = {
   children: JSX.Element | JSX.Element[];
 };
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 export const JournalLayout = ({ children }: JournalLayoutProps) => {
   return (
@@ -13,9 +13,10 @@ export const JournalLayout = ({ children }: JournalLayoutProps) => {
       {/* Navbar drawerWidth */}
       <Navbar drawerWidth={drawerWidth} />
       {/* Sidebar drawerWidth */}
-
-      <Box component="main" sx={{ flexGrow: 1, p: 1 }}>
+      <Sidebar drawerWidth={drawerWidth} />
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         {/* Toolbar */}
+        <Toolbar />
         {children}
       </Box>
     </Box>
