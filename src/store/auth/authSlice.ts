@@ -17,7 +17,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  status: AUTH_STATUS.CHECKING,
+  status: AUTH_STATUS.NOT_AUTHENTICATED,
   uid: null,
   email: null,
   displayName: null,
@@ -31,7 +31,10 @@ export const authSlice = createSlice({
   reducers: {
     login: (state, action: PayloadAction) => {},
     logout: (state, payload) => {},
-    checkingCredentials: (state) => {},
+    checkingCredentials: (state) => {
+      state.status = AUTH_STATUS.CHECKING;
+      state.errorMessage = null;
+    },
   },
 });
 
