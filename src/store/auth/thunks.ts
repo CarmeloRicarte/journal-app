@@ -3,6 +3,7 @@ import { checkingCredentials, login, logout } from ".";
 import { store } from "..";
 import {
   loginWithEmailAndPassword,
+  logoutFirebaseUser,
   registerWithEmailAndPassword,
   signInWithGoogle,
 } from "../../firebase";
@@ -90,3 +91,8 @@ export const startLoginWithEmailPassword = createAsyncThunk(
     );
   }
 );
+
+export const startLogout = createAsyncThunk("startLogout", async () => {
+  await logoutFirebaseUser();
+  store.dispatch(logout(""));
+});
