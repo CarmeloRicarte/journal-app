@@ -1,8 +1,21 @@
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import {
+  Alert,
+  Button,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "../../hooks";
 import { AuthLayout } from "../layout";
+import { useAppDispatch } from "../../store/hooks";
+import {
+  AUTH_STATUS,
+  startCreatingUserWithEmailPassword,
+} from "../../store/auth";
+import { useAppSelector } from "../../store/hooks";
 
 interface FormData {
   displayName: string;
@@ -22,7 +35,18 @@ const formValidations: {
 };
 
 export const RegisterPage = () => {
+  const dispatch = useAppDispatch();
+  const { status, errorMessage } = useAppSelector((state) => state.auth);
+
+  /* A memoized value that is only updated when the status changes. */
+  const isCheckingAuthentication = useMemo(
+    () => status === AUTH_STATUS.CHECKING,
+    [status]
+  );
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
   const {
+    formState,
     displayName,
     email,
     password,
@@ -38,12 +62,11 @@ export const RegisterPage = () => {
     formValidations
   );
 
-  const [formSubmitted, setFormSubmitted] = useState(false);
-
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
+    dispatch(startCreatingUserWithEmailPassword(formState));
   };
 
   return (
@@ -90,8 +113,17 @@ export const RegisterPage = () => {
             />
           </Grid>
           <Grid container spacing={2} sx={{ my: 1 }}>
+            <Grid item xs={12} display={!!errorMessage ? "" : "none"}>
+              <Alert severity="error">{errorMessage}</Alert>
+            </Grid>
+
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" fullWidth>
+              <Button
+                disabled={isCheckingAuthentication}
+                type="submit"
+                variant="contained"
+                fullWidth
+              >
                 Sign up
               </Button>
             </Grid>
