@@ -16,8 +16,8 @@ export const LoginPage = () => {
   const { status } = useAppSelector((state) => state.auth);
 
   const { email, password, onInputChange } = useForm({
-    email: "carmelo@google.com",
-    password: "123456",
+    email: "",
+    password: "",
   });
 
   /* A memoized value that is only updated when the status changes. */
