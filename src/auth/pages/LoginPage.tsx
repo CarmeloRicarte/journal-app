@@ -1,19 +1,30 @@
+import { useMemo } from "react";
 import { Google } from "@mui/icons-material";
 import { Button, Grid, Link, TextField, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "../../hooks";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { AuthLayout } from "../layout";
+import { AUTH_STATUS } from "../../store/auth/authSlice";
 import {
   checkingAuthentication,
   startGoogleSignIn,
 } from "../../store/auth/thunks";
+
 export const LoginPage = () => {
   const dispatch = useAppDispatch();
+  const { status } = useAppSelector((state) => state.auth);
+
   const { email, password, onInputChange } = useForm({
     email: "carmelo@google.com",
     password: "123456",
   });
+
+  /* A memoized value that is only updated when the status changes. */
+  const isAuthenticating = useMemo(
+    () => status === AUTH_STATUS.CHECKING,
+    [status]
+  );
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -22,7 +33,7 @@ export const LoginPage = () => {
 
   const onGoogleSignIn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    dispatch(startGoogleSignIn({ email, password }));
+    dispatch(startGoogleSignIn());
   };
 
   return (
@@ -53,12 +64,18 @@ export const LoginPage = () => {
           </Grid>
           <Grid container spacing={2} sx={{ my: 1 }}>
             <Grid item xs={12} sm={6}>
-              <Button type="submit" variant="contained" fullWidth>
+              <Button
+                disabled={isAuthenticating}
+                type="submit"
+                variant="contained"
+                fullWidth
+              >
                 Sign in
               </Button>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Button
+                disabled={isAuthenticating}
                 type="button"
                 onClick={onGoogleSignIn}
                 variant="contained"
