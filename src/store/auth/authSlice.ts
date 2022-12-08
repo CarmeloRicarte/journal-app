@@ -17,7 +17,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  status: AUTH_STATUS.NOT_AUTHENTICATED,
+  status: AUTH_STATUS.CHECKING,
   uid: null,
   email: null,
   displayName: null,
