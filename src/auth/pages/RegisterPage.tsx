@@ -5,7 +5,7 @@ import { useForm } from "../../hooks";
 import { AuthLayout } from "../layout";
 
 interface FormData {
-  fullName: string;
+  displayName: string;
   email: string;
   password: string;
 }
@@ -13,7 +13,7 @@ interface FormData {
 const formValidations: {
   [key: string]: [(value: string) => boolean, string];
 } = {
-  fullName: [(value: string) => value.length > 0, "Full name is required"],
+  displayName: [(value: string) => value.length > 0, "Full name is required"],
   email: [(value: string) => value.includes("@"), "Email should have an @"],
   password: [
     (value: string) => value.length >= 8,
@@ -23,7 +23,7 @@ const formValidations: {
 
 export const RegisterPage = () => {
   const {
-    fullName,
+    displayName,
     email,
     password,
     onInputChange,
@@ -31,7 +31,7 @@ export const RegisterPage = () => {
     formValidation,
   } = useForm<FormData>(
     {
-      fullName: "",
+      displayName: "",
       email: "",
       password: "",
     },
@@ -42,8 +42,8 @@ export const RegisterPage = () => {
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!isFormValid) return;
     setFormSubmitted(true);
+    if (!isFormValid) return;
   };
 
   return (
@@ -56,11 +56,11 @@ export const RegisterPage = () => {
               type="text"
               placeholder="Your full name"
               fullWidth
-              name="fullName"
-              value={fullName}
+              name="displayName"
+              value={displayName}
               onChange={onInputChange}
-              error={!!formValidation.fullNameValid && formSubmitted}
-              helperText={formValidation.fullNameValid}
+              error={!!formValidation.displayNameValid && formSubmitted}
+              helperText={formValidation.displayNameValid}
             />
           </Grid>
           <Grid item xs={12} sx={{ mt: 2 }}>
