@@ -42,6 +42,7 @@ export const RegisterPage = () => {
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!isFormValid) return;
     setFormSubmitted(true);
   };
 
