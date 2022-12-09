@@ -1,5 +1,9 @@
 import { ChangeEvent, useEffect, useMemo, useRef } from "react";
-import { SaveOutlined, UploadFileOutlined } from "@mui/icons-material";
+import {
+  DeleteOutline,
+  SaveOutlined,
+  UploadFileOutlined,
+} from "@mui/icons-material";
 import { Button, Grid, TextField, Typography, IconButton } from "@mui/material";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
@@ -8,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { ImageGallery } from "../components";
 import {
   setActiveNote,
+  startDeletingNote,
   startSavingNote,
   startUploadingFiles,
 } from "../../store/journal";
@@ -45,6 +50,22 @@ export const NoteView = () => {
 
   const onSaveNote = () => {
     dispatch(startSavingNote());
+  };
+
+  const onDeleteNote = () => {
+    Swal.fire({
+      title: "Delete Note",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(startDeletingNote());
+      }
+    });
   };
 
   const onFileInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +112,11 @@ export const NoteView = () => {
         >
           <SaveOutlined sx={{ fontSize: 30, mr: 1 }} />
           Save
+        </Button>
+
+        <Button type="button" onClick={onDeleteNote} color="error">
+          <DeleteOutline />
+          Delete
         </Button>
       </Grid>
       <Grid container>

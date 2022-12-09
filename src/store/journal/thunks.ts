@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, doc, setDoc } from "firebase/firestore/lite";
+import { collection, deleteDoc, doc, setDoc } from "firebase/firestore/lite";
 import {
   addNewEmptyNote,
+  deleteNoteById,
   savingNewNote,
   setActiveNote,
   setNotes,
@@ -79,5 +80,16 @@ export const startUploadingFiles = createAsyncThunk(
 
     const photosUrls = await Promise.all(fileUploadPromises);
     store.dispatch(setPhotosToActiveNote(photosUrls));
+  }
+);
+
+export const startDeletingNote = createAsyncThunk(
+  "notes/startDeletingNote",
+  async () => {
+    const { uid } = store.getState().auth;
+    const { active: note } = store.getState().journal;
+    const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
+    await deleteDoc(docRef);
+    store.dispatch(deleteNoteById(note.id));
   }
 );
