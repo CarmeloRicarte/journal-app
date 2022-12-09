@@ -7,6 +7,7 @@ import {
   registerWithEmailAndPassword,
   signInWithGoogle,
 } from "../../firebase";
+import { cleanJournalStoreOnLogout } from "../journal";
 import { AUTH_STATUS } from "./authSlice";
 
 /* A thunk that dispatches the checkingCredentials action. */
@@ -94,5 +95,6 @@ export const startLoginWithEmailPassword = createAsyncThunk(
 
 export const startLogout = createAsyncThunk("startLogout", async () => {
   await logoutFirebaseUser();
+  store.dispatch(cleanJournalStoreOnLogout());
   store.dispatch(logout(""));
 });
