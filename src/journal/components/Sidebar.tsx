@@ -13,13 +13,14 @@ import {
   Typography,
 } from "@mui/material";
 import { useAppSelector } from "../../store/hooks";
+import { SidebarItem } from "./SidebarItem";
 
 type SidebarProps = {
   drawerWidth: number;
 };
 export const Sidebar = ({ drawerWidth }: SidebarProps) => {
   const { displayName } = useAppSelector((state) => state.auth);
-
+  const { notes } = useAppSelector((state) => state.journal);
   return (
     <Box
       component="nav"
@@ -41,22 +42,8 @@ export const Sidebar = ({ drawerWidth }: SidebarProps) => {
         <Divider />
 
         <List>
-          {["Jan", "Feb", "Mar", "Apr", "May", "Jun"].map((month) => (
-            <ListItem key={month} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <TurnedInNot />
-                </ListItemIcon>
-                <Grid container>
-                  <ListItemText primary={month} />
-                  <ListItemText
-                    primary={
-                      "Esse voluptate non pariatur est nostrud proident qui consectetur sit ipsum ex minim officia duis."
-                    }
-                  />
-                </Grid>
-              </ListItemButton>
-            </ListItem>
+          {notes.map((note) => (
+            <SidebarItem key={note.id} {...note} />
           ))}
         </List>
       </Drawer>
