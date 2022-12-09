@@ -28,13 +28,14 @@ export const journalSlice = createSlice({
     },
     setActiveNote: (state, action: PayloadAction<JournalNote>) => {
       state.active = action.payload;
+      state.messageSaved = "";
     },
     setNotes: (state, action: PayloadAction<JournalNote[]>) => {
       state.notes = action.payload;
     },
     setSaving: (state) => {
       state.isSaving = true;
-      //TODO: show message
+      state.messageSaved = "";
     },
     updateNote: (state, action: PayloadAction<JournalNote>) => {
       state.isSaving = false;
@@ -46,6 +47,7 @@ export const journalSlice = createSlice({
         noteToUpdate.date = date;
         noteToUpdate.imageUrls = imageUrls;
       }
+      state.messageSaved = `${action.payload.title} has been updated!`;
     },
     deleteNodeById: (state, action: PayloadAction<string>) => {},
   },
