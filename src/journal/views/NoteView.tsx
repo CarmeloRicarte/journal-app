@@ -6,7 +6,11 @@ import "sweetalert2/dist/sweetalert2.css";
 import { useForm } from "../../hooks";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { ImageGallery } from "../components";
-import { setActiveNote, startSavingNote } from "../../store/journal";
+import {
+  setActiveNote,
+  startSavingNote,
+  startUploadingFiles,
+} from "../../store/journal";
 
 export const NoteView = () => {
   const dispatch = useAppDispatch();
@@ -45,7 +49,7 @@ export const NoteView = () => {
 
   const onFileInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (target.files?.length === 0) return;
-    // dispatch
+    target.files && dispatch(startUploadingFiles(target.files));
   };
 
   return (

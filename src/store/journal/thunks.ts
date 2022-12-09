@@ -5,12 +5,13 @@ import {
   savingNewNote,
   setActiveNote,
   setNotes,
+  setPhotosToActiveNote,
   setSaving,
   updateNote,
 } from ".";
 import { FirebaseDB } from "../../firebase";
 import { store } from "../store";
-import { loadNotes } from "../../journal/helpers";
+import { fileUpload, loadNotes } from "../../journal/helpers";
 
 export const startNewNote = createAsyncThunk("notes/startNewNote", async () => {
   store.dispatch(savingNewNote());
@@ -22,6 +23,7 @@ export const startNewNote = createAsyncThunk("notes/startNewNote", async () => {
     title: "",
     body: "",
     date: new Date().getTime(),
+    imageUrls: [],
   };
 
   const newDoc = doc(collection(FirebaseDB, `${uid}/journal/notes`));
@@ -61,5 +63,21 @@ export const startSavingNote = createAsyncThunk(
     const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
     await setDoc(docRef, noteToFirestore, { merge: true });
     store.dispatch(updateNote(note));
+  }
+);
+
+export const startUploadingFiles = createAsyncThunk(
+  "notes/startUploadingFiles",
+  async (files: FileList) => {
+    store.dispatch(setSaving());
+
+    // upload all files simultaneously
+    const fileUploadPromises = [];
+    for (const file of files) {
+      fileUploadPromises.push(fileUpload(file));
+    }
+
+    const photosUrls = await Promise.all(fileUploadPromises);
+    store.dispatch(setPhotosToActiveNote(photosUrls));
   }
 );
