@@ -3,5 +3,5 @@ export type JournalNote = {
   title: string;
   body: string;
   date: number;
-  imageUrls: string[];
+  imageUrls?: string[];
 };

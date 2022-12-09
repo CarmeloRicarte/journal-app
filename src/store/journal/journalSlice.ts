@@ -9,7 +9,7 @@ export interface JournalState {
 }
 
 const initialState: JournalState = {
-  isSaving: true,
+  isSaving: false,
   messageSaved: "",
   notes: [],
   active: null,
@@ -19,8 +19,16 @@ export const journalSlice = createSlice({
   name: "journal",
   initialState,
   reducers: {
-    addNewEmptyNote: (state, action: PayloadAction<JournalNote>) => {},
-    setActiveNote: (state, action: PayloadAction<JournalNote>) => {},
+    savingNewNote: (state) => {
+      state.isSaving = true;
+    },
+    addNewEmptyNote: (state, action: PayloadAction<JournalNote>) => {
+      state.notes.push(action.payload);
+      state.isSaving = false;
+    },
+    setActiveNote: (state, action: PayloadAction<JournalNote>) => {
+      state.active = action.payload;
+    },
     setNotes: (state, action: PayloadAction<JournalNote[]>) => {},
     setSaving: (state) => {
       state.isSaving = true;
@@ -33,9 +41,10 @@ export const journalSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   addNewEmptyNote,
+  deleteNodeById,
+  savingNewNote,
   setActiveNote,
   setNotes,
   setSaving,
   updateNote,
-  deleteNodeById,
 } = journalSlice.actions;
