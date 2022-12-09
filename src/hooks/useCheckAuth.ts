@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { FirebaseAuth } from "../firebase";
 import { logout, login, AUTH_STATUS } from "../store/auth";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { startLoadingNotes } from "../store/journal";
 
 /**
  * It uses the `useEffect` hook to listen for changes in the user's authentication status, and then
@@ -26,6 +27,7 @@ export const useCheckAuth = () => {
           errorMessage: null,
         })
       );
+      dispatch(startLoadingNotes());
     });
   }, []);
 
