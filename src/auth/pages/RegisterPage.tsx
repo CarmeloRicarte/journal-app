@@ -23,6 +23,12 @@ interface FormData {
   password: string;
 }
 
+const formData: FormData = {
+  displayName: "",
+  email: "",
+  password: "",
+};
+
 const formValidations: {
   [key: string]: [(value: string) => boolean, string];
 } = {
@@ -53,14 +59,7 @@ export const RegisterPage = () => {
     onInputChange,
     isFormValid,
     formValidation,
-  } = useForm<FormData>(
-    {
-      displayName: "",
-      email: "",
-      password: "",
-    },
-    formValidations
-  );
+  } = useForm<FormData>(formData, formValidations);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

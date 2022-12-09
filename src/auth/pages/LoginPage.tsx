@@ -18,14 +18,16 @@ import {
   startLoginWithEmailPassword,
 } from "../../store/auth";
 
+const formData = {
+  email: "",
+  password: "",
+};
+
 export const LoginPage = () => {
   const dispatch = useAppDispatch();
   const { status, errorMessage } = useAppSelector((state) => state.auth);
 
-  const { formState, email, password, onInputChange } = useForm({
-    email: "",
-    password: "",
-  });
+  const { formState, email, password, onInputChange } = useForm(formData);
 
   /* A memoized value that is only updated when the status changes. */
   const isAuthenticating = useMemo(
