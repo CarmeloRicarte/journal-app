@@ -5,6 +5,7 @@ import {
   UploadFileOutlined,
 } from "@mui/icons-material";
 import { Button, Grid, TextField, Typography, IconButton } from "@mui/material";
+import { DateTime } from "luxon";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
 import { useForm } from "../../hooks";
@@ -30,8 +31,12 @@ export const NoteView = () => {
 
   const dateFormatted = useMemo(() => {
     const dateString = date
-      ? new Date(date).toDateString()
-      : new Date().toDateString();
+      ? DateTime.fromMillis(date).toFormat("DDDD", {
+          locale: "en-US",
+        })
+      : DateTime.now().toFormat("DDDD", {
+          locale: "en-US",
+        });
     return dateString;
   }, [date]);
 
