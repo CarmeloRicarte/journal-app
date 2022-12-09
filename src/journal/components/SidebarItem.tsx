@@ -8,14 +8,32 @@ import {
   Grid,
   ListItemText,
 } from "@mui/material";
+import { useAppDispatch } from "../../store/hooks";
+import { setActiveNote } from "../../store/journal";
 
-export const SidebarItem = ({ title, body, id }: JournalNote) => {
+export const SidebarItem = ({
+  title,
+  body,
+  id,
+  date,
+  imageUrls = [],
+}: JournalNote) => {
   const newTitle = useMemo(
     () => (title.length > 17 ? title.substring(0, 17) + "..." : title),
     [title]
   );
+
+  const dispatch = useAppDispatch();
+  const onClickNote = (note: JournalNote) => {
+    dispatch(setActiveNote(note));
+  };
+
   return (
-    <ListItem key={id} disablePadding>
+    <ListItem
+      key={id}
+      disablePadding
+      onClick={() => onClickNote({ title, body, id, date, imageUrls })}
+    >
       <ListItemButton>
         <ListItemIcon>
           <TurnedInNot />

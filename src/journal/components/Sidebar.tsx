@@ -1,17 +1,4 @@
-import { TurnedInNot } from "@mui/icons-material";
-import {
-  Box,
-  Divider,
-  Drawer,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Drawer, List, Toolbar, Typography } from "@mui/material";
 import { useAppSelector } from "../../store/hooks";
 import { SidebarItem } from "./SidebarItem";
 
