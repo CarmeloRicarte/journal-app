@@ -1,6 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, doc, setDoc } from "firebase/firestore/lite";
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } from ".";
+import {
+  addNewEmptyNote,
+  savingNewNote,
+  setActiveNote,
+  setNotes,
+  setSaving,
+  updateNote,
+} from ".";
 import { FirebaseDB } from "../../firebase";
 import { store } from "../store";
 import { loadNotes } from "../../journal/helpers";
@@ -33,5 +40,26 @@ export const startLoadingNotes = createAsyncThunk(
     if (!uid) throw new Error("The UID of user doesn't exists");
     const notes = await loadNotes(uid);
     store.dispatch(setNotes(notes));
+  }
+);
+
+export const startSavingNote = createAsyncThunk(
+  "notes/startSavingNote",
+  async () => {
+    store.dispatch(setSaving());
+
+    const { uid } = store.getState().auth;
+    const { active: note } = store.getState().journal;
+
+    const noteToFirestore = {
+      title: note.title,
+      body: note.body,
+      date: note.date,
+      imageUrls: note.imageUrls,
+    };
+
+    const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
+    await setDoc(docRef, noteToFirestore, { merge: true });
+    store.dispatch(updateNote(note));
   }
 );

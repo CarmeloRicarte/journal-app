@@ -34,8 +34,19 @@ export const journalSlice = createSlice({
     },
     setSaving: (state) => {
       state.isSaving = true;
+      //TODO: show message
     },
-    updateNote: (state, action: PayloadAction<JournalNote>) => {},
+    updateNote: (state, action: PayloadAction<JournalNote>) => {
+      state.isSaving = false;
+      const { id, title, body, date, imageUrls } = action.payload;
+      const noteToUpdate = state.notes.find((note) => note.id === id);
+      if (noteToUpdate) {
+        noteToUpdate.title = title;
+        noteToUpdate.body = body;
+        noteToUpdate.date = date;
+        noteToUpdate.imageUrls = imageUrls;
+      }
+    },
     deleteNodeById: (state, action: PayloadAction<string>) => {},
   },
 });
