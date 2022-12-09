@@ -5,14 +5,14 @@ export interface JournalState {
   isSaving: boolean;
   messageSaved: string;
   notes: JournalNote[];
-  active: JournalNote | null;
+  active: JournalNote;
 }
 
 const initialState: JournalState = {
   isSaving: false,
   messageSaved: "",
   notes: [],
-  active: null,
+  active: {} as JournalNote,
 };
 
 export const journalSlice = createSlice({
