@@ -1,6 +1,6 @@
-import { useEffect, useMemo } from "react";
-import { SaveOutlined } from "@mui/icons-material";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { ChangeEvent, useEffect, useMemo, useRef } from "react";
+import { SaveOutlined, UploadFileOutlined } from "@mui/icons-material";
+import { Button, Grid, TextField, Typography, IconButton } from "@mui/material";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
 import { useForm } from "../../hooks";
@@ -26,6 +26,8 @@ export const NoteView = () => {
     return dateString;
   }, [date]);
 
+  const fileInputRef = useRef<HTMLInputElement>(null); // reference of hidden input field for upload images
+
   /* A hook that is called after every render. It is used to update the state of the active not when every element of form changes. */
   useEffect(() => {
     dispatch(setActiveNote(formState));
@@ -39,6 +41,11 @@ export const NoteView = () => {
 
   const onSaveNote = () => {
     dispatch(startSavingNote());
+  };
+
+  const onFileInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    if (target.files?.length === 0) return;
+    // dispatch
   };
 
   return (
@@ -56,6 +63,20 @@ export const NoteView = () => {
         </Typography>
       </Grid>
       <Grid item>
+        <input
+          type="file"
+          ref={fileInputRef}
+          multiple
+          onChange={onFileInputChange}
+          style={{ display: "none" }}
+        />
+        <IconButton
+          color="primary"
+          disabled={isSaving}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <UploadFileOutlined />
+        </IconButton>
         <Button
           disabled={isSaving}
           onClick={onSaveNote}
