@@ -15,6 +15,10 @@ export const useForm = <T extends Object>(
     createValidators();
   }, [formState]);
 
+  useEffect(() => {
+    setFormState(initialForm);
+  }, [initialForm]);
+
   /* It's checking if the form is valid. */
   const isFormValid = useMemo(() => {
     for (const formValue of Object.keys(formValidation)) {
