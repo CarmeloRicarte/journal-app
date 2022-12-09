@@ -25,7 +25,6 @@ export const NoteView = () => {
     messageSaved,
     isSaving,
   } = useAppSelector((state) => state.journal);
-  const {} = useAppSelector((state) => state.journal);
 
   const { body, title, date, onInputChange, formState } = useForm(activeNote);
 
@@ -119,8 +118,13 @@ export const NoteView = () => {
           Save
         </Button>
 
-        <Button type="button" onClick={onDeleteNote} color="error">
-          <DeleteOutline />
+        <Button
+          type="button"
+          onClick={onDeleteNote}
+          color="error"
+          sx={{ padding: 2 }}
+        >
+          <DeleteOutline sx={{ fontSize: 30, mr: 1 }} />
           Delete
         </Button>
       </Grid>
