@@ -96,5 +96,5 @@ export const startLoginWithEmailPassword = createAsyncThunk(
 export const startLogout = createAsyncThunk("startLogout", async () => {
   await logoutFirebaseUser();
   store.dispatch(cleanJournalStoreOnLogout());
-  store.dispatch(logout(""));
+  store.dispatch(logout(null));
 });
